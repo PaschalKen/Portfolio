@@ -12,7 +12,7 @@ export function SiteHeader() {
         <Link href="/" className="flex h-14 items-center font-semibold tracking-tight sm:h-auto">
           {site.firstName}
         </Link>
-        <nav aria-label="Main" className="order-last -mx-2 w-full overflow-x-auto pb-2 sm:order-none sm:mx-0 sm:ml-auto sm:w-auto sm:pb-0">
+        <nav aria-label="Main" className="order-last -mx-2 w-full overflow-x-auto overflow-y-hidden pb-2 [scrollbar-width:none] sm:order-none sm:mx-0 sm:ml-auto sm:w-auto sm:overflow-visible sm:pb-0">
           <Suspense fallback={<Links pathname={null} />}>
             <NavLinks />
           </Suspense>

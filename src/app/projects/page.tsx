@@ -13,7 +13,7 @@ export default function Page() {
       <PageHeader title="Projects" intro="Things I've built, from university coursework to what I'm working on now." />
       <div className="space-y-14">
         {projects.map((p) => (
-          <Entry key={p.slug} entry={p} />
+          <Entry key={p.slug} entry={p} collapsible />
         ))}
       </div>
     </>
