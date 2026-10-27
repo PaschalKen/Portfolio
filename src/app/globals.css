@@ -62,6 +62,16 @@
 /* ---------- Base ---------- */
 
 @layer base {
+  /* Phones: a 15px base instead of 16px. Everything is in rem, so text and spacing scale
+     together, and a percentage still respects the reader's own browser font size. */
+  html {
+    font-size: 93.75%;
+
+    @variant sm {
+      font-size: 100%;
+    }
+  }
+
   body {
     @apply bg-bg text-fg font-sans antialiased;
   }
