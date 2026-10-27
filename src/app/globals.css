@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Theme is set on <html data-theme> by the inline script in layout.tsx. */
+/* Theme is set on <html data-theme>: dark by default in layout.tsx, or the saved choice via its inline script. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* ---------- Design tokens ---------- */
