@@ -5,9 +5,10 @@ export const site = {
     "Software developer. Building things, writing about them, and tracking the rest.",
   url: "https://paschalken.vercel.app",
   nav: [
-    { href: "/", label: "Home" },
-    { href: "/now", label: "Now" },
+    { href: "/projects", label: "Projects" },
+    { href: "/experience", label: "Experience" },
     { href: "/timeline", label: "Timeline" },
+    { href: "/now", label: "Now" },
     { href: "/blog", label: "Blog" },
   ],
   socials: [

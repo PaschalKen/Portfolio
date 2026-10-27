@@ -14,10 +14,10 @@ export function NavLinks() {
   return <Links pathname={pathname} />;
 }
 
-// Rendered as the Suspense fallback too, with no active link.
+// Also rendered as the Suspense fallback, with no active link.
 export function Links({ pathname }: { pathname: string | null }) {
   return (
-    <ul className="flex items-center gap-1 sm:gap-2">
+    <ul className="flex items-center gap-1 whitespace-nowrap sm:gap-2">
       {site.nav.map(({ href, label }) => {
         const active = isActive(pathname, href);
         return (
