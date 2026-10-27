@@ -5,10 +5,9 @@ export const now = {
   // Bump this whenever you edit the page.
   updated: "2026-10-27",
   currently: [
-    "Going to the gym regularly",
+    // "Going to the gym regularly",
     "Reading more and cutting screen time",
     "Learning Python and AWS by building ForecastBridge",
-    // TODO: anything else
   ],
   reading: {
     title: "Atomic Habits",
@@ -26,7 +25,7 @@ export const now = {
     { group: "Carry", category: "Phone", name: "Samsung Galaxy S23 Ultra" },
     { group: "Carry", category: "Watch", name: "Samsung Galaxy Watch" },
     { group: "Carry", category: "Earbuds", name: "Samsung Galaxy Buds 3 Pro" },
-    { group: "Desk", category: "Laptop", name: "MacBook Pro" }, 
+    { group: "Desk", category: "Laptop", name: "MacBook Pro 14-inch (M5, 2025)" }, 
     { group: "Desk", category: "Keyboard", name: "Apple Magic Keyboard" },
     { group: "Desk", category: "Mouse", name: "Uineer Ergonomic Mouse" },
   ] satisfies Gadget[],

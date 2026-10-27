@@ -77,26 +77,7 @@ export default function Page() {
         </ul>
       </Section>
 
-      <Section title="Building & learning">
-        <ul className="space-y-4">
-          {building.map((p) => (
-            <li key={p.slug}>
-              <Link href={`/projects#${p.slug}`} className="font-medium hover:underline">
-                {p.title}
-              </Link>
-              {p.summary && <p className="text-muted">{p.summary}</p>}
-            </li>
-          ))}
-          {now.learning.map((l) => (
-            <li key={l.title}>
-              <p className="font-medium">Learning {l.title}</p>
-              <p className="text-muted">{l.note}</p>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section title="Listening">
+      <Section title="Listening Stats">
         <Suspense fallback={<ListeningSkeleton />}>
           <Listening />
         </Suspense>
@@ -117,7 +98,7 @@ export default function Page() {
         </Section>
       )}
 
-      <Section title="Uses">
+      <Section title="Tech & gadgets">
         <dl className="space-y-6">
           {gadgetGroups.map(({ group, items }) => (
             <div key={group} className="grid gap-2 sm:grid-cols-[8rem_1fr]">
