@@ -1,5 +1,6 @@
 import "server-only";
 import { cacheLife } from "next/cache";
+import { unstable_rethrow } from "next/navigation";
 
 // Credentials come from env vars only; see .env.example and scripts/spotify-auth.mjs.
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
@@ -31,35 +32,55 @@ export function spotifyConfigured() {
   );
 }
 
-async function getAccessToken(): Promise<string> {
+// Errors thrown inside "use cache" fail the whole build during prerendering, even if a caller
+// catches them. So cached functions here never throw: on failure they log, return a fallback,
+// and cache it only for seconds so the next request retries.
+
+class SpotifyError extends Error {}
+
+async function getAccessToken(): Promise<string | null> {
   "use cache";
-  // Spotify access tokens last an hour; refresh a little early.
-  cacheLife({ stale: 60, revalidate: 50 * 60, expire: 55 * 60 });
 
   const id = process.env.SPOTIFY_CLIENT_ID;
   const secret = process.env.SPOTIFY_CLIENT_SECRET;
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
-  if (!id || !secret || !refreshToken) throw new Error("Spotify env vars are not set");
+  if (!id || !secret || !refreshToken) {
+    cacheLife("seconds");
+    return null;
+  }
 
-  const res = await fetch(TOKEN_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${id}:${secret}`).toString("base64")}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshToken }),
-  });
-  if (!res.ok) throw new Error(`Spotify token refresh failed: ${res.status}`);
-  const data = (await res.json()) as { access_token: string };
-  return data.access_token;
+  try {
+    const res = await fetch(TOKEN_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${id}:${secret}`).toString("base64")}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshToken }),
+    });
+    if (!res.ok) {
+      // Spotify's body is e.g. {"error":"invalid_grant","error_description":"Invalid refresh token"}; no secrets.
+      console.error(`[spotify] token refresh failed: ${res.status} ${await res.text()}`);
+      cacheLife("seconds");
+      return null;
+    }
+    // Spotify access tokens last an hour; refresh a little early.
+    cacheLife({ stale: 60, revalidate: 50 * 60, expire: 55 * 60 });
+    return ((await res.json()) as { access_token: string }).access_token;
+  } catch (err) {
+    console.error("[spotify] token refresh error:", err instanceof Error ? err.message : err);
+    cacheLife("seconds");
+    return null;
+  }
 }
 
-/** Returns null for "nothing to show" (204). Throws on real failures so they are never cached. */
+/** Returns null for "nothing to show" (204). Throws SpotifyError on failure; callers decide what to cache. */
 async function spotifyGet<T>(path: string): Promise<T | null> {
   const token = await getAccessToken();
+  if (!token) throw new SpotifyError("no access token");
   const res = await fetch(`${API}${path}`, { headers: { Authorization: `Bearer ${token}` } });
   if (res.status === 204) return null;
-  if (!res.ok) throw new Error(`Spotify ${path} failed: ${res.status}`);
+  if (!res.ok) throw new SpotifyError(`${path} failed: ${res.status}`);
   return (await res.json()) as T;
 }
 
@@ -128,20 +149,30 @@ async function fetchNowPlaying(): Promise<NowPlaying | null> {
 
 async function fetchTopArtists(): Promise<Artist[]> {
   "use cache";
-  cacheLife("hours");
-
-  const data = await spotifyGet<{ items: ApiArtist[] }>("/me/top/artists?time_range=short_term&limit=6");
-  return (data?.items ?? []).map((a) => ({ name: a.name, image: pickImage(a.images), url: a.external_urls.spotify }));
+  try {
+    const data = await spotifyGet<{ items: ApiArtist[] }>("/me/top/artists?time_range=short_term&limit=6");
+    cacheLife("hours");
+    return (data?.items ?? []).map((a) => ({ name: a.name, image: pickImage(a.images), url: a.external_urls.spotify }));
+  } catch (err) {
+    console.error("[spotify] top artists:", err instanceof Error ? err.message : err);
+    cacheLife("seconds");
+    return [];
+  }
 }
 
 async function fetchRecentlyPlayed(): Promise<RecentTrack[]> {
   "use cache";
-  cacheLife("minutes");
-
-  const data = await spotifyGet<{ items: { track: ApiTrack; played_at: string }[] }>(
-    "/me/player/recently-played?limit=5",
-  );
-  return (data?.items ?? []).map((i) => ({ ...toTrack(i.track), playedAt: i.played_at }));
+  try {
+    const data = await spotifyGet<{ items: { track: ApiTrack; played_at: string }[] }>(
+      "/me/player/recently-played?limit=5",
+    );
+    cacheLife("minutes");
+    return (data?.items ?? []).map((i) => ({ ...toTrack(i.track), playedAt: i.played_at }));
+  } catch (err) {
+    console.error("[spotify] recently played:", err instanceof Error ? err.message : err);
+    cacheLife("seconds");
+    return [];
+  }
 }
 
 // Public API: never throws, so a Spotify outage or expired token can't break the page.
@@ -150,6 +181,8 @@ async function safely<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await fn();
   } catch (err) {
+    // Let Next's own control-flow signals (e.g. prerender postponement) through.
+    unstable_rethrow(err);
     console.error("[spotify]", err instanceof Error ? err.message : err);
     return fallback;
   }

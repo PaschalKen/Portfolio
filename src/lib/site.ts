@@ -18,5 +18,6 @@ export const site = {
       label: "LinkedIn",
       icon: "linkedin",
     },
+    { href: "mailto:ezenwobikene@gmail.com", label: "Email", icon: "mail" },
   ],
 } as const;
