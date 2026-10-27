@@ -5,11 +5,11 @@ export const site = {
     "Software developer. Building things, writing about them, and tracking the rest.",
   url: "https://paschalezenwobi.vercel.app",
   nav: [
-    { href: "/projects", label: "Projects" },
-    { href: "/experience", label: "Experience" },
-    { href: "/timeline", label: "Timeline" },
-    { href: "/now", label: "Now" },
-    { href: "/blog", label: "Blog" },
+    { href: "/projects", label: "Projects", icon: "projects" },
+    { href: "/experience", label: "Experience", icon: "experience" },
+    { href: "/timeline", label: "Timeline", icon: "timeline" },
+    { href: "/now", label: "Now", icon: "now" },
+    { href: "/blog", label: "Blog", icon: "blog" },
   ],
   socials: [
     { href: "https://github.com/PaschalKen", label: "GitHub", icon: "github" },
