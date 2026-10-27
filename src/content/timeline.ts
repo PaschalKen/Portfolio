@@ -81,12 +81,12 @@ const entries: TimelineEntry[] = [
   {
     slug: "seeman-business-management",
     type: "project",
-    title: "Seeman Business Management",
+    title: "Seeman Business Management System",
     org: "Final year project",
     start: "2025-11",
     end: null,
     summary:
-      "Multi branch business management system for an automotive parts distributor, with a React and TypeScript PWA frontend and a NestJS API on PostgreSQL covering sales, stock and staff.",
+      "Multi branch business management system for an automotive parts distributor, with a React and TypeScript PWA frontend and a NestJS API on PostgreSQL covering reporting, sales, supplies, stock/inventory and staff activities.",
     award: "School of Computing Project Excellence Award",
     bullets: [
       "📶 Sales and expenses recorded offline are queued in an IndexedDB outbox and replayed on reconnect; idempotency keys prevent duplicates, server errors stay queued and rejected requests are marked as failed.",

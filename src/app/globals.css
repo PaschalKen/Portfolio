@@ -46,6 +46,19 @@
   --container-prose: 40rem;
 }
 
+/* ---------- Animations ---------- */
+
+/* Now-playing equaliser bars; each bar gets its own duration so they drift out of sync. */
+@keyframes equalize {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
 /* ---------- Base ---------- */
 
 @layer base {

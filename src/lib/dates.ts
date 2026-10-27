@@ -6,6 +6,12 @@ export function formatMonth(ym: string) {
   return `${MONTHS[month - 1]} ${year}`;
 }
 
+/** "2026-10-27" → "27 Oct 2026". */
+export function formatDay(ymd: string) {
+  const [year, month, day] = ymd.split("-").map(Number);
+  return `${day} ${MONTHS[month - 1]} ${year}`;
+}
+
 /** end: undefined = single date, null = ongoing. */
 export function formatRange(start: string, end?: string | null) {
   if (end === undefined) return formatMonth(start);

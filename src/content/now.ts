@@ -1,4 +1,4 @@
-export type Gadget = { category: string; name: string; note?: string };
+export type Gadget = { group: "Carry" | "Desk" | "Software"; category: string; name: string; note?: string };
 export type Creator = { name: string; href: string; note?: string };
 
 export const now = {
@@ -23,16 +23,16 @@ export const now = {
     },
   ],
   gadgets: [
-    { category: "Phone", name: "Samsung Galaxy S23 Ultra" }, // TODO: confirm model
-    { category: "Laptop", name: "MacBook Pro" }, // TODO: model/year
-    { category: "Watch", name: "Samsung Galaxy Watch" }, // TODO: confirm model
-    { category: "Headphones", name: "Samsung Galaxy Buds 3 Pro" }, // TODO: confirm model
-    { category: "Keyboard", name: "Apple Magic Keyboard" }, // TODO: confirm model
-    { category: "Mouse", name: "Uineer Ergonomic Mouse" }, // TODO: confirm model
-    // TODO: phone, keyboard, headphones, desk, editor, terminal
+    { group: "Carry", category: "Phone", name: "Samsung Galaxy S23 Ultra" },
+    { group: "Carry", category: "Watch", name: "Samsung Galaxy Watch" },
+    { group: "Carry", category: "Earbuds", name: "Samsung Galaxy Buds 3 Pro" },
+    { group: "Desk", category: "Laptop", name: "MacBook Pro" }, 
+    { group: "Desk", category: "Keyboard", name: "Apple Magic Keyboard" },
+    { group: "Desk", category: "Mouse", name: "Uineer Ergonomic Mouse" },
   ] satisfies Gadget[],
-  // TODO: YouTube creators worth following.
-  creators: [] satisfies Creator[],
-  // No Samsung Health web API, so steps are hand-updated (see PLAN.md).
+  // TODO: YouTube creators worth following. The Watching section stays hidden while this is empty.
+  creators: [] as Creator[],
+  // Hand-updated until live sources exist: no Samsung Health web API; gym moves to Strava if syncing works.
   steps: { dailyAverage: null as number | null, asOf: null as string | null }, // TODO
+  gym: { sessionsThisWeek: null as number | null, asOf: null as string | null }, // TODO
 };
