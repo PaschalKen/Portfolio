@@ -11,8 +11,9 @@ export function SiteFooter() {
             <li key={href}>
               <a
                 href={href}
-                aria-label={label}
+                aria-label={`${label} (opens in a new tab)`}
                 title={label}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex size-9 items-center justify-center rounded-md transition-colors hover:bg-surface hover:text-fg"
               >
