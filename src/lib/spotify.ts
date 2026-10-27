@@ -1,6 +1,7 @@
 import "server-only";
 import { cacheLife } from "next/cache";
 import { unstable_rethrow } from "next/navigation";
+import { connection } from "next/server";
 
 // Credentials come from env vars only; see .env.example and scripts/spotify-auth.mjs.
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
@@ -177,7 +178,12 @@ async function fetchRecentlyPlayed(): Promise<RecentTrack[]> {
 
 // Public API: never throws, so a Spotify outage or expired token can't break the page.
 async function safely<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
-  if (!spotifyConfigured()) return fallback;
+  if (!spotifyConfigured()) {
+    // Without this the fallback is baked into the static page at build time, so env vars set
+    // later (or missing from the build) never show up. Wait for a request and check again then.
+    await connection();
+    return fallback;
+  }
   try {
     return await fn();
   } catch (err) {

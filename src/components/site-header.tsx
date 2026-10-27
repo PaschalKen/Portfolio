@@ -7,12 +7,12 @@ import { site } from "@/lib/site";
 export function SiteHeader() {
   return (
     <header className="border-b border-border">
-      {/* Phones: name + toggle on one row, nav on its own row below. sm+: all on one row. */}
-      <div className="mx-auto flex max-w-page flex-wrap items-center gap-x-1 px-4 sm:h-16 sm:flex-nowrap sm:px-6">
-        <Link href="/" className="flex h-14 items-center font-semibold tracking-tight sm:h-auto">
+      {/* Phones: name + toggle only; the nav lives in the bottom tab bar (MobileNav). */}
+      <div className="mx-auto flex h-14 max-w-page items-center gap-x-1 px-4 sm:h-16 sm:px-6">
+        <Link href="/" className="font-semibold tracking-tight">
           {site.firstName}
         </Link>
-        <nav aria-label="Main" className="order-last -mx-2 w-full overflow-x-auto overflow-y-hidden pb-2 [scrollbar-width:none] sm:order-none sm:mx-0 sm:ml-auto sm:w-auto sm:overflow-visible sm:pb-0">
+        <nav aria-label="Main" className="ml-auto hidden sm:block">
           <Suspense fallback={<Links pathname={null} />}>
             <NavLinks />
           </Suspense>
