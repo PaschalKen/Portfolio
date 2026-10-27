@@ -51,22 +51,19 @@ export default function Page() {
           <p className="font-medium">{now.reading.title}</p>
           <p className="text-sm text-muted">{now.reading.author}</p>
         </Tile>
-        <Tile label="Steps" footnote={now.steps.asOf ? `Daily average, as of ${formatDay(now.steps.asOf)}` : undefined}>
-          {now.steps.dailyAverage !== null ? (
+        {/* Tiles without data stay hidden until a value (or a live source) exists. */}
+        {now.steps.dailyAverage !== null && (
+          <Tile label="Steps" footnote={now.steps.asOf ? `Daily average, as of ${formatDay(now.steps.asOf)}` : undefined}>
             <p className="text-2xl font-semibold tabular-nums">{now.steps.dailyAverage.toLocaleString("en-GB")}</p>
-          ) : (
-            <p className="text-muted">Coming soon</p>
-          )}
-        </Tile>
-        <Tile label="Gym" footnote={now.gym.asOf ? `As of ${formatDay(now.gym.asOf)}` : undefined}>
-          {now.gym.sessionsThisWeek !== null ? (
+          </Tile>
+        )}
+        {now.gym.sessionsThisWeek !== null && (
+          <Tile label="Gym" footnote={now.gym.asOf ? `As of ${formatDay(now.gym.asOf)}` : undefined}>
             <p className="text-2xl font-semibold tabular-nums">
               {now.gym.sessionsThisWeek}× <span className="text-base font-normal text-muted">this week</span>
             </p>
-          ) : (
-            <p className="text-muted">Coming soon</p>
-          )}
-        </Tile>
+          </Tile>
+        )}
       </div>
 
       <Section title="Currently">
