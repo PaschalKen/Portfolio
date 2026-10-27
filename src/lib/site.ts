@@ -3,7 +3,7 @@ export const site = {
   firstName: "Paschal",
   description:
     "Software developer. Building things, writing about them, and tracking the rest.",
-  url: "https://paschalken.vercel.app",
+  url: "https://paschalezenwobi.vercel.app",
   nav: [
     { href: "/projects", label: "Projects" },
     { href: "/experience", label: "Experience" },

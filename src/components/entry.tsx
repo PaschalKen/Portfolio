@@ -14,6 +14,9 @@ export function Tags({ tags }: { tags: string[] }) {
   );
 }
 
+// Edge-to-edge body text; hyphenation (needs <html lang>) keeps word gaps even on narrow screens.
+const JUSTIFY = "text-justify hyphens-auto";
+
 /** Full entry: heading, dates, summary, bullets, tags, links. Used by Projects and Experience. */
 export function Entry({
   entry,
@@ -27,7 +30,7 @@ export function Entry({
 }) {
   const ongoing = entry.end === null;
   const bullets = (
-    <ul className="list-disc space-y-1.5 pl-5 marker:text-border">
+    <ul className={`list-disc space-y-1.5 pl-5 marker:text-border ${JUSTIFY}`}>
       {entry.bullets.map((b) => (
         <li key={b}>{b}</li>
       ))}
@@ -43,7 +46,7 @@ export function Entry({
         </p>
       </div>
       {entry.org && <p className="mt-0.5 text-muted">{entry.org}</p>}
-      {entry.summary && <p className="mt-3">{entry.summary}</p>}
+      {entry.summary && <p className={`mt-3 ${JUSTIFY}`}>{entry.summary}</p>}
       {entry.award && (
         <p className="mt-3 font-semibold">
           <span role="img" aria-label="Award">🏆</span> {entry.award}
