@@ -10,7 +10,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="font-semibold tracking-tight">
           <span className="sm:hidden">PE</span>
-          <span className="hidden sm:inline">{site.name}</span>
+          <span className="hidden sm:inline">{site.firstName}</span>
         </Link>
         <div className="flex items-center gap-1">
           <nav aria-label="Main">
