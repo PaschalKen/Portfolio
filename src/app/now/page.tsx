@@ -4,6 +4,8 @@ import { Suspense, type ReactNode } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Listening, ListeningSkeleton } from "@/components/now/listening";
 import { NowPlaying } from "@/components/now/now-playing";
+import { StepsTile } from "@/components/now/steps-tile";
+import { Tile } from "@/components/now/tile";
 import { now, type Gadget } from "@/content/now";
 import { timeline } from "@/content/timeline";
 import { formatDay } from "@/lib/dates";
@@ -14,16 +16,6 @@ const building = timeline.filter((e) => e.type === "project" && e.end === null);
 const gadgetGroups = (["Carry", "Desk", "Software"] as const)
   .map((group) => ({ group, items: now.gadgets.filter((g: Gadget) => g.group === group) }))
   .filter((g) => g.items.length > 0);
-
-function Tile({ label, children, footnote }: { label: string; children: ReactNode; footnote?: string }) {
-  return (
-    <div className="rounded-lg border border-border p-4">
-      <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">{label}</p>
-      {children}
-      {footnote && <p className="mt-2 text-xs text-muted">{footnote}</p>}
-    </div>
-  );
-}
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   const id = title.toLowerCase().replace(/[^a-z]+/g, "-");
@@ -52,11 +44,9 @@ export default function Page() {
           <p className="text-sm text-muted">{now.reading.author}</p>
         </Tile>
         {/* Tiles without data stay hidden until a value (or a live source) exists. */}
-        {now.steps.dailyAverage !== null && (
-          <Tile label="Steps" footnote={now.steps.asOf ? `Daily average, as of ${formatDay(now.steps.asOf)}` : undefined}>
-            <p className="text-2xl font-semibold tabular-nums">{now.steps.dailyAverage.toLocaleString("en-GB")}</p>
-          </Tile>
-        )}
+        <Suspense fallback={null}>
+          <StepsTile />
+        </Suspense>
         {now.gym.sessionsThisWeek !== null && (
           <Tile label="Gym" footnote={now.gym.asOf ? `As of ${formatDay(now.gym.asOf)}` : undefined}>
             <p className="text-2xl font-semibold tabular-nums">

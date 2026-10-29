@@ -23,7 +23,7 @@ export const now = {
   ],
   gadgets: [
     { group: "Carry", category: "Phone", name: "Samsung Galaxy S23 Ultra" },
-    { group: "Carry", category: "Watch", name: "Samsung Galaxy 7 (44mm)" },
+    { group: "Carry", category: "Watch", name: "Samsung Galaxy Watch 7 (44mm)" },
     { group: "Carry", category: "Earbuds", name: "Samsung Galaxy Buds 3 Pro" },
     { group: "Desk", category: "Laptop", name: "MacBook Pro 14-inch (M5, 2025)" }, 
     { group: "Desk", category: "Keyboard", name: "Apple Magic Keyboard" },
