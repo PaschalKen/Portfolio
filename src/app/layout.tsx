@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MobileNav } from "@/components/mobile-nav";
@@ -51,6 +52,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <SiteFooter />
         <MobileNav />
+        {/* Vercel Web Analytics: cookieless page views; only reports on Vercel deployments. */}
+        <Analytics />
       </body>
     </html>
   );

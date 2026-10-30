@@ -107,6 +107,8 @@ Everything except the live tiles works with an empty `.env.local`; those tiles s
 
 Pushing to `main` deploys to Vercel automatically. Other branches get preview URLs and only go live once merged into `main`.
 
+**Analytics:** [Vercel Web Analytics](https://vercel.com/docs/analytics) (`<Analytics />` in `src/app/layout.tsx`) records page views, referrers, countries and devices without cookies, so no consent banner is needed. It must be enabled once in the Vercel project's **Analytics** tab, and only reports from Vercel deployments, never from `npm run dev`.
+
 ## Troubleshooting
 
 | Symptom | Likely cause |
