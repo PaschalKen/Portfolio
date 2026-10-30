@@ -1,0 +1,85 @@
+---
+title: How my watch steps reach this website
+date: 2026-10-29
+summary: Samsung Health has no web API, so I wrote a small Android app that reads Health Connect and posts my daily steps to this site.
+---
+
+The [Now page](/now) on this site shows how many steps I've walked today. That number comes from the Galaxy Watch on my wrist, and it updates by itself roughly every hour. Getting it there turned out to be more interesting than I expected, because the obvious route doesn't exist.
+
+## The problem: the data is stuck on my phone
+
+My watch counts steps and syncs them to Samsung Health on my phone. My first assumption was that Samsung would have a web API I could call from the website, the way Spotify does for the song I'm playing. It doesn't. Samsung Health's data is only available on the device, through an Android SDK.
+
+Android does have a shared health store called **Health Connect**. Samsung Health writes into it, and other apps can read from it with your permission. But Health Connect is deliberately on-device too: there's no cloud endpoint, so a server can't ask it anything.
+
+So the steps couldn't be pulled from the outside. Something on the phone had to push them out.
+
+```
+Galaxy Watch
+    → Samsung Health          (Samsung's app on the phone)
+    → Health Connect          (Android's on-device health store)
+    → Steps Uploader          (a small app I wrote)
+    → POST /api/steps         (this website)
+    → Redis                   (one number per day)
+    → the Now page
+```
+
+## The phone side: a tiny Android app
+
+I kept the app as small as possible. Steps Uploader is written in Kotlin with Jetpack Compose and does three things:
+
+1. Asks once for permission to **read steps** from Health Connect, including in the background. It can't write anything or see any other health data.
+2. About once an hour, reads the step total for each of the last seven days.
+3. Sends those totals to the website.
+
+Reading the totals is one aggregate query per day. Health Connect's aggregate merges overlapping sources, so steps counted by both the watch and the phone aren't counted twice, and the result matches what Samsung Health shows:
+
+```kotlin
+val result = client.aggregate(
+    AggregateRequest(
+        metrics = setOf(StepsRecord.COUNT_TOTAL),
+        timeRangeFilter = TimeRangeFilter.between(day.atStartOfDay(), day.plusDays(1).atStartOfDay()),
+    ),
+)
+val steps = result[StepsRecord.COUNT_TOTAL] ?: 0L
+```
+
+The hourly schedule comes from **WorkManager**, Android's scheduler for background jobs. I give it a periodic job with a "needs internet" constraint, and it handles the rest: running while the app is closed, surviving restarts, and retrying with backoff when an upload fails.
+
+### Why it resends a whole week every time
+
+The simplest version would send just today's count. But phones go offline, run out of battery, or get put to sleep by aggressive battery savers. If an upload is missed, today's number never gets corrected.
+
+So every upload sends the last seven days. If the phone is off for a day, the next successful upload fills the gap automatically. It costs a few extra bytes and removes a whole class of bugs.
+
+## The website side: a small, locked-down endpoint
+
+The app posts JSON to `/api/steps`:
+
+```json
+{ "days": [{ "date": "2026-11-02", "steps": 6240 }] }
+```
+
+Because this endpoint writes data, it needed to be strict. It only accepts requests carrying a shared secret in the `Authorization` header, compared in constant time so the response can't leak how close a guess was. It then validates every entry: real calendar dates only, whole numbers only, nothing negative or absurd, and at most a month of days per request. Anything else is rejected before it touches storage.
+
+Valid days go into **Upstash Redis** as a single hash, mapping each date to its step count. Writing the same date twice just overwrites it, which is exactly what the resend-the-week approach needs.
+
+## Showing it without hammering anything
+
+The Now page is built with Next.js, which can cache the result of a function and share it across every visitor. The steps lookup is cached for days, which sounds wrong for live data, but it isn't: whenever the phone uploads, the endpoint marks that cache as stale. The next visitor gets the fresh number, and in between, nobody's page view touches Redis at all.
+
+The tile shows the latest day's total, labelled "today" when it really is today in the visitor's time zone, plus a total for the last seven calendar days.
+
+If Redis is unreachable, the tile simply hides. A broken integration should cost one tile, not the whole page.
+
+## What caught me out
+
+- **Health Connect wasn't set up.** At first there was simply nothing in Health Connect to read. Once it was installed and Samsung Health was allowed to share, heart rate appeared straight away, but steps only arrived after Samsung Health's next sync.
+- **Battery optimisation.** Samsung is quick to put background apps to sleep, which can pause hourly jobs for hours. Setting the app's battery usage to "Unrestricted" stops that from happening.
+- **Quotes in environment variables.** My local `.env` file had quoted values, which Next.js strips. Pasted into Vercel, the quotes would have become part of the value and every request would have failed, so they have to go.
+
+## What I'd do differently
+
+If this were for other people rather than just me, I'd swap the single shared secret for per-device keys, and store raw readings rather than daily totals so the data could be re-aggregated later. For one person and one watch, the simple version does the job, and once it's set up there's nothing for me to maintain.
+
+The website's code, including the steps endpoint, is on my [GitHub](https://github.com/PaschalKen/Portfolio).

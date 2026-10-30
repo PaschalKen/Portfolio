@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { PageHeader } from "@/components/page-header";
+import { BlogTile } from "@/components/now/blog-tile";
+import { GitHubTile } from "@/components/now/github-tile";
 import { Listening, ListeningSkeleton } from "@/components/now/listening";
 import { NowPlaying } from "@/components/now/now-playing";
 import { StepsTile } from "@/components/now/steps-tile";
@@ -36,24 +38,19 @@ export default function Page() {
       <p className="-mt-8 mb-12 text-sm text-muted">Updated {formatDay(now.updated)}</p>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <Tile label="Listening on Spotify">
+        <Tile label="🎧 Listening on Spotify">
           <NowPlaying />
         </Tile>
-        <Tile label="Reading">
-          <p className="font-medium">{now.reading.title}</p>
-          <p className="text-sm text-muted">{now.reading.author}</p>
-        </Tile>
+        <Suspense fallback={null}>
+          <BlogTile />
+        </Suspense>
         {/* Tiles without data stay hidden until a value (or a live source) exists. */}
         <Suspense fallback={null}>
           <StepsTile />
         </Suspense>
-        {now.gym.sessionsThisWeek !== null && (
-          <Tile label="Gym" footnote={now.gym.asOf ? `As of ${formatDay(now.gym.asOf)}` : undefined}>
-            <p className="text-2xl font-semibold tabular-nums">
-              {now.gym.sessionsThisWeek}× <span className="text-base font-normal text-muted">this week</span>
-            </p>
-          </Tile>
-        )}
+        <Suspense fallback={null}>
+          <GitHubTile />
+        </Suspense>
       </div>
 
       <Section title="Currently">

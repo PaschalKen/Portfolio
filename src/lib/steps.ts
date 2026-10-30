@@ -37,6 +37,11 @@ export async function saveSteps(days: StepsDay[]) {
 export async function getSteps(): Promise<StepsSummary | null> {
   "use cache";
   cacheTag(STEPS_TAG);
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    // Env vars only change on deploy, so "not configured" can be cached like a real result.
+    cacheLife("days");
+    return null;
+  }
   try {
     const { result } = await redis<{ result: string[] }>("", ["HGETALL", DAILY_KEY]);
     const days: StepsDay[] = [];

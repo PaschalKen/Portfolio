@@ -15,10 +15,12 @@ Built with Next.js 16 (App Router, Cache Components), TypeScript and Tailwind CS
 | `/` | Avatar, intro, a live strip (current song and steps), featured projects, experience at a glance | `src/content/profile.ts`, `timeline.ts`, live data |
 | `/projects` | Every project, newest first, with tags, links and "Read more" for long write-ups | `src/content/timeline.ts` |
 | `/experience` | Work history, newest first | `src/content/timeline.ts` |
-| `/now` | Live Spotify, live step count, reading, currently, uses | Spotify API, Upstash, `src/content/now.ts` |
-| `/blog` | Writing (in progress) | — |
+| `/now` | Live Spotify, live step count, GitHub contributions, latest blog post, currently, uses | Spotify API, Upstash, GitHub GraphQL, `src/content/now.ts` |
+| `/blog`, `/blog/[slug]` | Posts with reading time, code highlighting, and an RSS feed at `/blog/rss.xml` | `src/content/posts/*.mdx` |
 
 Content is plain TypeScript in `src/content/`, typed so a missing field fails the build rather than the page. Projects and roles both live in `timeline.ts` (one dated list); add an entry and it appears on Projects or Experience automatically, and on the home page if marked `featured`.
+
+**Writing a post:** add `src/content/posts/<slug>.mdx` starting with front matter (`title`, `date` as `YYYY-MM-DD`, optional `summary`, optional `draft: true`), then push. It appears on `/blog`, in the RSS feed and on the Now page's Blog tile on the next deploy. Locally, restart `npm run dev` to pick up new files.
 
 ---
 
@@ -89,6 +91,7 @@ Everything except the live tiles works with an empty `.env.local`; those tiles s
 | `UPSTASH_REDIS_REST_URL` | Steps storage | [upstash.com](https://upstash.com) → Redis database → REST API |
 | `UPSTASH_REDIS_REST_TOKEN` | Steps storage | same place |
 | `STEPS_API_KEY` | Shared secret with the phone app | any long random string, e.g. `openssl rand -hex 32` |
+| `GITHUB_TOKEN` | </> GitHub contributions tile | github.com → Settings → Developer settings → Fine-grained tokens; **Public repositories (read-only)**, no other permissions |
 
 `.env.local` is git-ignored. In Vercel these go under **Settings → Environments → Production**, pasted **without quotes**, and only apply to deploys made after they're saved.
 

@@ -31,7 +31,6 @@ export const now = {
   ] satisfies Gadget[],
   // TODO: YouTube creators worth following. The Watching section stays hidden while this is empty.
   creators: [] as Creator[],
-  // Hand-updated until live sources exist: no Samsung Health web API; gym moves to Strava if syncing works.
-  steps: { dailyAverage: null as number | null, asOf: null as string | null }, // TODO
-  gym: { sessionsThisWeek: null as number | null, asOf: null as string | null }, // TODO
+  // Fallback only: live steps come from the phone app (src/lib/steps.ts). Shown if that has no data.
+  steps: { dailyAverage: null as number | null, asOf: null as string | null },
 };
