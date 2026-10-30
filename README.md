@@ -1,6 +1,6 @@
 # paschalezenwobi.vercel.app
 
-My personal site: projects, experience, a timeline, a blog, and a **Now** page with live data — what I'm playing on Spotify and how many steps my watch has counted today.
+My personal site: projects, experience, a blog, and a **Now** page with live data — what I'm playing on Spotify and how many steps my watch has counted today.
 
 **Live:** [paschalezenwobi.vercel.app](https://paschalezenwobi.vercel.app)
 
@@ -12,13 +12,13 @@ Built with Next.js 16 (App Router, Cache Components), TypeScript and Tailwind CS
 
 | Route | What it shows | Data comes from |
 |---|---|---|
+| `/` | Avatar, intro, a live strip (current song and steps), featured projects, experience at a glance | `src/content/profile.ts`, `timeline.ts`, live data |
 | `/projects` | Every project, newest first, with tags, links and "Read more" for long write-ups | `src/content/timeline.ts` |
-| `/experience` | Work and education | `src/content/timeline.ts` |
-| `/timeline` | Everything on one reverse-chronological line (in progress) | `src/content/timeline.ts` |
+| `/experience` | Work history, newest first | `src/content/timeline.ts` |
 | `/now` | Live Spotify, live step count, reading, currently, uses | Spotify API, Upstash, `src/content/now.ts` |
 | `/blog` | Writing (in progress) | — |
 
-Content is plain TypeScript in `src/content/`, typed so a missing field fails the build rather than the page. To add a project, add an entry to `timeline.ts`; it appears on the Projects page automatically.
+Content is plain TypeScript in `src/content/`, typed so a missing field fails the build rather than the page. Projects and roles both live in `timeline.ts` (one dated list); add an entry and it appears on Projects or Experience automatically, and on the home page if marked `featured`.
 
 ---
 
@@ -121,11 +121,12 @@ src/
   app/
     api/spotify/now-playing/  live "now playing" JSON
     api/steps/                receives steps from the phone
-    now/ projects/ experience/ timeline/ blog/
+    page.tsx                  home
+    now/ projects/ experience/ blog/
   components/
     now/                      Now-page tiles (Spotify, steps, shared Tile)
     entry.tsx collapsible.tsx project/experience entries, "Read more"
-  content/                    the site's words: timeline, now, profile
+  content/                    the site's words: timeline.ts (projects + roles), now, profile
   lib/                        spotify.ts, steps.ts, site config, dates, theme
 scripts/spotify-auth.mjs      one-time Spotify login helper
 ```

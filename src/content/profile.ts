@@ -6,10 +6,11 @@ export type Profile = {
 };
 
 export const profile: Profile = {
-  positioning: "Software developer building practical, offline-first web apps for real businesses.",
+  positioning:
+    "Software engineer building reliable web apps that solve real problems.",
   intro: [
-    "Software Engineering graduate from the University of Portsmouth (First Class Honours), with a 14-month industrial placement at Radweb Ltd working across React, TypeScript, Laravel and AWS.",
-    "Interested in building software for small and growing businesses, particularly in Nigeria, and currently learning Python and AWS through a side project.",
+    "First Class Software Engineering graduate from the University of Portsmouth. I spent 14 months at Radweb building features for a live property inspection platform in React, TypeScript and Laravel (PHP), and earned MVP awards along the way.",
+    "I enjoy building software that solves real problems, whether that’s for a business or one of the small frustrations in my own life. Outside of code, you’ll usually find me at the gym, on a table tennis or badminton court, or buried in a history book.",
   ],
   // TODO: current status, e.g. "Starting a new role as a Junior Software Developer in late 2026".
   status: "TODO: current status",

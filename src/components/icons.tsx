@@ -36,13 +36,6 @@ const navShapes = {
       <rect width="20" height="14" x="2" y="6" rx="2" />
     </>
   ),
-  timeline: (
-    <>
-      <path d="M12 3v6" />
-      <circle cx="12" cy="12" r="3" />
-      <path d="M12 15v6" />
-    </>
-  ),
   now: (
     <>
       <circle cx="12" cy="12" r="10" />

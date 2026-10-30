@@ -50,6 +50,7 @@ const entries: TimelineEntry[] = [
         href: "https://4hgo4skmrmq4avm52lrgj23lzu0gatfn.lambda-url.eu-north-1.on.aws/",
       },
     ],
+    featured: true,
   },
   {
     slug: "subira",
@@ -113,29 +114,72 @@ const entries: TimelineEntry[] = [
       },
       { label: "Visit Live", href: "https://seemanauto.onrender.com/" },
     ],
+    featured: true,
+  },
+  {
+    slug: "student-information-assistant-2025",
+    type: "role",
+    title: "Student Information Assistant",
+    org: "University of Portsmouth",
+    start: "2025-09",
+    end: "2026-05",
+    bullets: [
+      "Served as first point of contact for a service supporting over 1,100 students, assessing each enquiry quickly and either resolving it or directing it to the appropriate team based on set procedures.",
+      "Communicated clearly and patiently with people of varying backgrounds, often supporting students who were anxious or distressed, responding in a calm, caring and professional manner.",
+      "Maintained accurate student records and managed the appointment booking system, keeping information confidential to a high standard of accuracy.",
+      "Prioritised competing demands during busy periods and events, taking personal ownership of issues and seeing them through to resolution.",
+      "Verified and maintained placement and job listings on the University's MyCareer platform, liaising with internal teams and external employers to ensure accuracy before publishing.",
+      "Planned and supported careers events, Open Days and Freshers events, directing employers and students and resolving queries on the day.",
+    ],
   },
   {
     slug: "radweb",
     type: "role",
     title: "Junior Software Developer",
-    org: "Radweb Ltd (industrial placement)",
+    org: "Radweb Ltd (Industrial placement)",
     start: "2024-07",
     end: "2025-09",
+    summary:
+      "Developed and maintained production SaaS applications in PHP, Laravel, React (TypeScript) and MySQL, delivering features, bug fixes and improvements for a property inspection platform used by over 3,500 clients in 50+ countries.",
     bullets: [
-      "Shipped features across a React/TypeScript frontend and a Laravel/MySQL backend for a property inspection platform used by 3,500+ customers in 50+ countries",
-      "Migrated the Google Maps integration to AdvancedMarkerElement, adding zoom-based entity limiting, bounds-based querying and polygon property selection",
-      "Automated GPT-4 report generation with AWS Lambda and S3, and maintained third-party integrations over REST and OAuth 2",
-      "Received several MVP awards, including one for clearing a batch of customer-facing issues",
+      "Built backend functionality in object-oriented PHP with Laravel across controllers, models, business logic and Blade views, in an event-driven codebase organised by business domain.",
+      "Investigated and fixed production bugs across frontend and backend code, tracing each one to its root cause rather than its symptom, and working with QA and senior engineers to verify the fix.",
+      "Migrated the Google Maps integration to AdvancedMarkerElement, adding zoom-based entity limiting, bounds-based querying and polygon property selection.",
+      "Contributed to AWS features using S3 and Lambda, including a production GPT-4 workflow that generated property inspection reports from uploaded images and video.",
+      "Built and maintained REST API integrations with external property platforms, using OAuth 2 for secure authentication.",
+      "Wrote automated tests with PHP Prophecy for backend code and Cypress for end-to-end workflows, took part in code reviews, and supported CI/CD pipelines using CircleCI and Docker.",
+      "Monitored errors and uptime with Sentry and Alertra to identify failures and keep services reliable.",
+      "Received several MVP awards, including one for clearing a batch of customer-facing issues.",
     ],
-    tags: [
-      "React",
-      "TypeScript",
-      "Redux",
-      "Laravel",
-      "MySQL",
-      "AWS",
-      "Jest",
-      "Cypress",
+    tags: ["PHP", "Laravel", "React", "TypeScript", "MySQL", "AWS", "Docker", "CircleCI", "Cypress"],
+  },
+  {
+    slug: "computing-ambassador",
+    type: "role",
+    title: "Computing Undergraduate Ambassador",
+    org: "Trafalgar School, Portsmouth",
+    start: "2024-02",
+    end: "2024-05",
+    summary:
+      "Weekly placement supporting computing lessons alongside the class teacher, as part of the University of Portsmouth's Computing Undergraduate Ambassador module.",
+    bullets: [
+      "Supported the class teacher during weekly computing lessons, helping lessons run smoothly and giving students extra attention where they needed it.",
+      "Observed lessons and took notes on the teaching methods used, using these for module reporting and to reflect on my own communication and development.",
+      "Worked professionally within a structured school environment, following the school's policies, routines and expectations.",
+    ],
+  },
+  {
+    slug: "student-information-assistant-2024",
+    type: "role",
+    title: "Student Information Assistant",
+    org: "University of Portsmouth",
+    start: "2024-01",
+    end: "2024-06",
+    bullets: [
+      "Responded to a high volume of student queries in person and by email, resolving issues promptly or escalating where appropriate.",
+      "Supported one-to-one and group sessions, adapting guidance to each individual's needs and circumstances.",
+      "Organised meetings and managed scheduling based on individual student circumstances, ensuring appropriate support allocation.",
+      "Collaborated with the careers team to coordinate placement and job fairs, connecting students with potential employers.",
     ],
   },
   {
@@ -176,22 +220,21 @@ const entries: TimelineEntry[] = [
     links: [
       { label: "GitHub", href: "https://github.com/PaschalKen/Virtual-Pet" },
     ],
-    featured: true,
   },
-  {
-    slug: "portsmouth",
-    type: "education",
-    title: "BSc (Hons) Software Engineering with Placement Year",
-    org: "University of Portsmouth",
-    // TODO: exact start and graduation months.
-    start: "2022-09",
-    end: "2026-07",
-    bullets: [
-      "First Class Honours",
-      "School of Computing Project Excellence Award for my final year project",
-      // TODO: part-time roles (Student Information Assistant, IT Help Adviser)? Add or delete.
-    ],
-  },
+  // {
+  //   slug: "portsmouth",
+  //   type: "education",
+  //   title: "BSc (Hons) Software Engineering with Placement Year",
+  //   org: "University of Portsmouth",
+  //   // TODO: exact start and graduation months.
+  //   start: "2022-09",
+  //   end: "2026-07",
+  //   bullets: [
+  //     "First Class Honours",
+  //     "School of Computing Project Excellence Award for my final year project",
+  //     // TODO: part-time roles (Student Information Assistant, IT Help Adviser)? Add or delete.
+  //   ],
+  // },
 ];
 
 // TODO: Hue Smash — no repo or details yet; add an entry when ready.

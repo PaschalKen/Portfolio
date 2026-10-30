@@ -8,7 +8,6 @@ export const site = {
     { href: "/projects", label: "Projects", icon: "projects" },
     { href: "/experience", label: "Experience", icon: "experience" },
     { href: "/now", label: "Now", icon: "now" },
-    { href: "/timeline", label: "Timeline", icon: "timeline" },
     { href: "/blog", label: "Blog", icon: "blog" },
   ],
   socials: [
