@@ -7,8 +7,8 @@ export const site = {
   nav: [
     { href: "/projects", label: "Projects", icon: "projects" },
     { href: "/experience", label: "Experience", icon: "experience" },
-    { href: "/timeline", label: "Timeline", icon: "timeline" },
     { href: "/now", label: "Now", icon: "now" },
+    { href: "/timeline", label: "Timeline", icon: "timeline" },
     { href: "/blog", label: "Blog", icon: "blog" },
   ],
   socials: [
